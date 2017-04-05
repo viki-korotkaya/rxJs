@@ -1,0 +1,8 @@
+var requestStream = Rx.Observable.just('https://api.github.com/users');
+var responseStream = requestStream
+    .flatMap(function(requestUrl) {
+        return Rx.Observable.fromPromise(jQuery.getJSON(requestUrl));
+    });
+responseStream.subscribe(function(response) {
+    // render `response` to the DOM however you wish
+});
