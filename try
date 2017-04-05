@@ -1,4 +1,4 @@
-var requestStream = Rx.Observable.just('https://api.github.com/users');
+var requestStream = Rx.Observable.just('https://api.github.com/users'); /*operator JUST Returns an observable sequence that contains a single element */
 var responseStream = requestStream
     .flatMap(function(requestUrl) {
         return Rx.Observable.fromPromise(jQuery.getJSON(requestUrl));
