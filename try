@@ -6,3 +6,41 @@ var responseStream = requestStream
 responseStream.subscribe(function(response) {
     // render `response` to the DOM however you wish
 });
+
+//refresh button
+var refreshButton = document.querySelector('.refresh');
+var refreshClickStream = Rx.Observable.fromEvent(refreshButton, 'click');
+
+var requestOnRefreshStream = refreshClickStream
+    .map(function() {
+        var randomOffset = Math.floor(Math.random()*500);
+        return 'https://api.github.com/users?since=' + randomOffset;
+    });
+
+var startupRequestStream = Rx.Observable.just('https://api.github.com/users');
+//merge 2 stream in one
+var requestStream = Rx.Observable.merge(
+    requestOnRefreshStream, startupRequestStream
+);
+//alternative way
+requestStream = refreshClickStream
+    .map(function() {
+        var randomOffset = Math.floor(Math.random()*500);
+        return 'https://api.github.com/users?since=' + randomOffset;
+    })
+    .merge(Rx.Observable.just('https://api.github.com/users'));
+
+//more shorter:
+requestStream = refreshClickStream
+    .map(function() {
+        var randomOffset = Math.floor(Math.random()*500);
+        return 'https://api.github.com/users?since=' + randomOffset;
+    })
+    .startWith('https://api.github.com/users');
+
+//optimal
+requestStream = refreshClickStreamstartWith('startup click')
+    .map(function() {
+        var randomOffset = Math.floor(Math.random()*500);
+        return 'https://api.github.com/users?since=' + randomOffset;
+    });
