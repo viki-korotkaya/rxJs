@@ -44,3 +44,57 @@ requestStream = refreshClickStreamstartWith('startup click')
         var randomOffset = Math.floor(Math.random()*500);
         return 'https://api.github.com/users?since=' + randomOffset;
     });
+//model a suggestion as a stream (строка пользователя, 2 другие оформить +2 потока)
+var suggestion1Stream = responseStream
+    .map(function(listUsers) {
+        // get one random user from the list
+        return listUsers[Math.floor(Math.random()*listUsers.length)];
+    });
+//how avoid repeat users
+var suggestion2Stream = responseStream
+    .map(function(listUsers) {
+        return listUsers[Math.floor(Math.random()*listUsers.length)];
+    })
+var suggestion2Stream = responseStream
+    .map(function(listUsers) {
+        return listUsers[Math.floor(Math.random()*listUsers.length)];
+    })
+
+suggestion1Stream.subscribe(function(suggestion) {
+    // render the 1st suggestion to the DOM
+});
+
+var suggestion1Stream = responseStream
+    .map(function(listUsers) {
+        // get one random user from the list
+        return listUsers[Math.floor(Math.random()*listUsers.length)];
+    })
+    .merge(
+        refreshClickStream.map(function(){ return null; })
+    );
+
+suggestion1Stream.subscribe(function(suggestion) {
+    if (suggestion === null) {
+        // hide the first suggestion DOM element
+    }
+    else {
+        // show the first suggestion DOM element
+        // and render the data
+    }
+});
+
+//начинаем с null
+var suggestion1Stream = responseStream
+    .map(function(listUsers) {
+        // get one random user from the list
+        return listUsers[Math.floor(Math.random()*listUsers.length)];
+    })
+    .merge(
+        refreshClickStream.map(function(){ return null; })
+    )
+    .startWith(null);
+
+
+// закрытие предложенных юзеров
+//1 вариант, как поток
+
